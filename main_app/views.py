@@ -25,14 +25,17 @@ def finches_index(request):
 
 def finches_detail(request, finch_id):
   finch = Finch.objects.get(id=finch_id)
+  id_list = finch.trees.all().values_list('id')
+  trees_finch_doesnt_have = Tree.objects.exclude(id__in=id_list)
   feeding_form = FeedingForm()
   return render(request, "finches/detail.html", {
-    "finch": finch, "feeding_form": feeding_form
+    "finch": finch, "feeding_form": feeding_form,
+    'trees': trees_finch_doesnt_have
   })
 
 class FinchCreate(CreateView):
   model = Finch
-  fields = '__all__' # <-- inform Django to render ALL fields when creating a new Finch
+  fields = ["name", "color", "gender", "location"]
 
 class FinchUpdate(UpdateView):
   model = Finch
@@ -67,3 +70,7 @@ class TreeUpdate(UpdateView):
 class TreeDelete(DeleteView):
   model = Tree
   success_url = '/trees'
+
+def assoc_tree(request, finch_id, tree_id):
+  Finch.objects.get(id=finch_id).trees.add(tree_id)
+  return redirect('detail', finch_id=finch_id)

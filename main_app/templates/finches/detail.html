@@ -8,13 +8,9 @@
       <div class="card">
         <div class="card-content">
           <span class="card-title">{{ finch.name }}</span>
-          <p>Breed: {{ finch.breed }}</p>
-          <p>Description: {{ finch.description|linebreaks }}</p>
-          {% if finch.age > 0 %}
-            <p>Age: {{ finch.age }}</p>
-          {% else %}
-            <p>Age: Kitten</p>
-          {% endif %}
+          <p>Color: {{ finch.color }}</p>
+          <p>Gender: {{ finch.gender }}</p>
+          <p>Location: {{ finch.location }}</p>
         </div>
         <div class="card-action">
           <a href="{% url 'finches_update' finch.id %}">Edit</a>
@@ -46,6 +42,50 @@
     </div>
     <!-- New Markup Above -->
   </div>
+
+  <!-- This is all new markup to be added just above the <script> tag -->
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ finch.name }}'s Trees</h3>
+    {% if finch.trees.count %}
+      {% for tree in finch.trees.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A {{ tree.kind }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Trees</h5>
+    {% endif %}
+  </div>
+  <!-- Available trees will come after this line -->
+  <div class="col s6">
+    <h3>Available Trees</h3>
+    {% if trees.count %}
+      {% for tree in trees.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A {{ tree.kind }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_tree' finch.id tree.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{finch.name}} Already Has All Trees Available</h5>
+    {% endif %}
+  </div>
+</div>
   
   <script>
     const dateEl = document.getElementById('id_date');

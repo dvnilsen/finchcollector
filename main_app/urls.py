@@ -10,6 +10,8 @@ urlpatterns = [
   path("finches/<int:pk>/update/", views.FinchUpdate.as_view(), name="finches_update"),
   path("finches/<int:pk>/delete/", views.FinchDelete.as_view(), name="finches_delete"),
   path('finches/<int:finch_id>/add_feeding/', views.add_feeding, name='add_feeding'),
+  # associate a tree with a finch (M:M)
+  path('finchs/<int:finch_id>/assoc_tree/<int:tree_id>/', views.assoc_tree, name='assoc_tree'),
   path('trees/', views.TreeList.as_view(), name='trees_index'),
   path('trees/<int:pk>/', views.TreeDetail.as_view(), name='trees_detail'),
   path('trees/create/', views.TreeCreate.as_view(), name='trees_create'),
