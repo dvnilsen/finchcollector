@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 
-from .models import Finch
+from .models import Finch, Tree 
 from .forms import FeedingForm
 
 #finches = [
@@ -48,3 +49,21 @@ def add_feeding(request, finch_id):
     new_feeding.finch_id = finch_id
     new_feeding.save()
   return redirect('detail', finch_id=finch_id)
+
+class TreeList(ListView):
+  model = Tree
+
+class TreeDetail(DetailView):
+  model = Tree
+
+class TreeCreate(CreateView):
+  model = Tree
+  fields = '__all__'
+
+class TreeUpdate(UpdateView):
+  model = Tree
+  fields = '__all__'
+
+class TreeDelete(DeleteView):
+  model = Tree
+  success_url = '/trees'

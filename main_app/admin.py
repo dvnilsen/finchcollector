@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Finch, Feeding
+from .models import Finch, Feeding, Tree
 
 # Register your models here.
 admin.site.register(Finch)
